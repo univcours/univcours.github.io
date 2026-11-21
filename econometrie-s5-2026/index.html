@@ -162,12 +162,12 @@ function openCourseSummary(subject){
  const url=summaryUrl(subject.id);
  currentItem=null;
  resetViewer();
- $("modalTitle").textContent="Résumé — "+subject.name;
+ $("modalTitle").textContent="Résumé de la matière : "+subject.name;
  $("modalInfo").textContent="Fiche de révision PDF · Basée sur les documents du cours";
  $("githubFileLink").hidden=true;
  const pdf=document.createElement("iframe");
  pdf.className="viewer-frame";
- pdf.title="Résumé PDF — "+subject.name;
+ pdf.title="Résumé de la matière : "+subject.name;
  pdf.src=url+"#toolbar=1&navpanes=0&view=FitH";
  $("viewerBody").append(pdf);
  const download=$("modalDownload");
@@ -192,8 +192,8 @@ function drawSubjects(){
  if(AVAILABLE_RESUMES.has(s.id)){
   const link=document.createElement("a");
   link.className="summary-link";link.href=summaryUrl(s.id);
-  link.textContent="📘 Lire le résumé PDF";
-  link.title="Lire le résumé de "+s.name+" dans cette page";
+  link.textContent="📘 Résumé de la matière";
+  link.title="Ouvrir le résumé de la matière : "+s.name;
   link.addEventListener("click",event=>{event.preventDefault();openCourseSummary(s);});
   holder.append(link);
  }else{
