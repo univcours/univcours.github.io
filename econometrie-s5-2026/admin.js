@@ -289,7 +289,7 @@ function render(){
     <div class="admin-grid">
       <label class="admin-field">Token archive privée (univcours/rdp)
       <input id="adminPrivateToken" type="password" autocomplete="off" placeholder="github_pat_…"></label>
-      <label class="admin-field">Token site public (ribhlab.github.io) · facultatif si même accès
+      <label class="admin-field">Token site public (univcours.github.io) · facultatif si même accès
       <input id="adminSiteToken" type="password" autocomplete="off" placeholder="Laisser vide si même token"></label>
     </div>
     <div class="admin-form-row"><button type="button" id="adminCheckToken" class="admin-button secondary">Vérifier les accès GitHub</button><span class="admin-note">Les fichiers originaux resteront dans GitHub Private.</span></div>
