@@ -217,6 +217,7 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(6px)}.modal{display:flex;
 <section class="hero"><span class="pill">LICENCE ÉCONOMÉTRIE · SEMESTRE 5</span><div class="eyebrow" style="margin-top:22px">Bibliothèque de ressources · 2026</div>
 <h1>Choisissez une matière, <span>ouvrez vos cours.</span></h1>
 <p>Appuyez sur une matière : tous ses cours et exercices apparaissent juste en dessous. Appuyez sur un document pour le lire ici, sans changer de page.</p>
+<div class="rowactions"><button type="button" class="btn btn-primary" id="shareWhatsApp">📲 Partager avec aperçu WhatsApp</button></div>
 
 <input type="checkbox" id="rememberZip" hidden>
 <button id="forgetZip" type="button" hidden></button>
@@ -492,6 +493,17 @@ async function refreshPublicCatalog(){
 $("countPdfs").textContent=catalog.files.filter(x=>x.kind==="PDF"||x.kind==="Documents").length;
 
 
+$("shareWhatsApp").addEventListener("click",()=>{
+ const access=new URLSearchParams(location.hash.replace(/^#/,"")).get("access");
+ if(!access){
+   alert("Pour partager aussi l'accès aux fichiers, ouvrez d'abord le lien privé complet de la classe.");
+   return;
+ }
+ const link="https://univcours.github.io/econometrie-s5-2026/partager.html#access="+encodeURIComponent(access);
+ const message="📚 UnivCours — Économétrie S5\\n20 PDF · 7 matières · 5 résumés\\n"+link;
+ const whatsapp="https://api.whatsapp.com/send?text="+encodeURIComponent(message);
+ window.open(whatsapp,"_blank","noopener,noreferrer");
+});
 drawSubjects();drawFiles();drawSummaries();refreshPublicCatalog();restoreBrowserZip();
 </script>
 <script>
