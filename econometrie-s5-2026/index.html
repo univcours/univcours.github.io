@@ -1,7 +1,23 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<script>
+/* Nettoyage automatique des paramètres publicitaires, sans toucher à l'accès privé (#access). */
+(() => {
+  try {
+    const url = new URL(window.location.href);
+    let changed = false;
+    for (const key of [...url.searchParams.keys()]) {
+      if (/^utm_/i.test(key) || (key.toLowerCase() === "ref" && /chatgpt/i.test(url.searchParams.get(key) || ""))) {
+        url.searchParams.delete(key);
+        changed = true;
+      }
+    }
+    if (changed) window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
+  } catch (_) {}
+})();
+</script><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Économétrie S5 · Bibliothèque par matière</title>
 <meta name="description" content="39 fichiers dans 11 matières : cours, TD, exercices, PDF, images et vidéos. Ressources et liens directs collectés depuis le groupe WhatsApp, classés par matière.">
 <link rel="canonical" href="https://univcours.github.io/econometrie-s5-2026/">
