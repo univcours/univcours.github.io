@@ -1,0 +1,38 @@
+name: Generate UnivCours social preview image
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/scripts/create_social_card.py"
+      - ".github/workflows/create-social-card.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  social-preview:
+    name: Build 1200x630 social image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install Pillow
+        run: python -m pip install --quiet Pillow
+      - name: Render 1200x630 JPEG
+        run: python .github/scripts/create_social_card.py
+      - name: Commit preview image
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add econometrie-s5-2026/share-preview.jpg
+          if ! git diff --cached --quiet; then
+            git commit -m "Add UnivCours WhatsApp preview image"
+            git push
+          fi
