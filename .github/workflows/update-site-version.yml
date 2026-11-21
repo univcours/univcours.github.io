@@ -34,8 +34,9 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             REV=$(git rev-parse HEAD)
+            HTML_SHA=$(sha256sum econometrie-s5-2026/index.html | cut -d ' ' -f 1)
             NOW=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-            printf '{\n  "version": "%s",\n  "updatedAt": "%s"\n}\n' "$REV" "$NOW" > econometrie-s5-2026/site-version.json
+            printf '{\n  "version": "%s",\n  "indexSha256": "%s",\n  "updatedAt": "%s"\n}\n' "$REV" "$HTML_SHA" "$NOW" > econometrie-s5-2026/site-version.json
             git add econometrie-s5-2026/site-version.json
             if git diff --cached --quiet; then
               echo "Version is already current."
