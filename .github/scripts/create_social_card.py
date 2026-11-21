@@ -66,7 +66,7 @@ d.text((62, 266), "Cours · TD · Exercices · Documents", font=face(24, False),
 d.text((63, 305), "Ouvrez chaque document directement sur le site", font=face(18, False), fill=(180, 217, 228, 255))
 
 # Two prominent statistic cards.
-for x, label, count, ww in [(61, "FICHIERS", "39", 225), (300, "MATIÈRES", "11", 234)]:
+for x, label, count, ww in [(61, "PDF", "20", 225), (300, "MATIÈRES", "7", 234)]:
     d.rounded_rectangle((x, 368, x + ww, 469), radius=18, fill=(13, 54, 70, 225), outline=(65, 151, 172, 255), width=2)
     d.text((x + 22, 373), count, font=face(50, True), fill=TEAL)
     d.text((x + 109, 414), label, font=face(16, True), fill=WHITE)
