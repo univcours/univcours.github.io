@@ -19,6 +19,20 @@
 })();
 </script>
 <script>
+/* Mobile: serve HTML from the network at each navigation instead of stale cache. */
+(() => {
+ if (!("serviceWorker" in navigator) || location.protocol !== "https:") return;
+ window.addEventListener("load", () => {
+  navigator.serviceWorker.register("/econometrie-s5-2026/sw.js?revision=20261121-mobile-fresh", {
+   scope: "/econometrie-s5-2026/",
+   updateViaCache: "none"
+  }).then(registration => {
+   registration.update().catch(() => {});
+  }).catch(error => console.warn("UnivCours: navigation worker unavailable",error));
+ }, {once:true});
+})();
+</script>
+<script>
 /* Synchronise la page sur chaque nouvelle publication, sans perdre #access. */
 (() => {
  const ROOT="/econometrie-s5-2026/";
