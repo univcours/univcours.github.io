@@ -102,6 +102,13 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(6px)}.modal{display:flex;
   #viewerDialog{width:100vw;height:100vh;height:100dvh;max-width:100vw;max-height:100vh;max-height:100dvh;border:0;border-radius:0;}
   #viewerDialog .modal-bar{min-height:46px;padding:8px 10px;}
 }
+/* Résumés de révision — visibles sous chaque carte, sans écran supplémentaire. */
+.subjects .subject-card{display:flex;flex-direction:column;min-width:0;border:1px solid var(--border);border-radius:15px;overflow:hidden;background:linear-gradient(140deg,#16293a,#0e1e30)}
+.subject-card .subject{width:100%;flex:1;margin:0;border:0;border-radius:0;background:transparent;padding:16px}
+.subject-card .subject.active{background:linear-gradient(130deg,#1b4848,#142c40)}
+.subject-card .summary-link{display:block;padding:12px 16px;border-top:1px solid #34566a;color:#a5fae9;font-size:13px;font-weight:800;text-decoration:none}
+.subject-card .summary-link:hover,.subject-card .summary-link:focus-visible{background:#1d4a4c;color:#fff}
+.subject-card .summary-empty{display:block;padding:12px 16px;border-top:1px solid #34566a;color:#9bafba;font-size:11.5px}
 </style>
 <link rel="stylesheet" href="/econometrie-s5-2026/admin.css">
 <style>
@@ -149,18 +156,50 @@ function iconsOf(item){return item.kind==="PDF"?"📄":item.kind==="Documents"?"
 const slugText=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 function subjectCount(id){return catalog.files.filter(x=>x.subject===id).length;}
 function showStatus(message,error=false){const e=$("archiveStatus");e.textContent=message;e.className="status visible"+(error?" error":"");}
+const AVAILABLE_RESUMES=new Set(["microeconomie","tests-hypotheses","croissance-economique","anglais","ia-ro"]);
+const summaryUrl=(id)=>"/econometrie-s5-2026/resumes/"+encodeURIComponent(id)+".pdf";
+function openCourseSummary(subject){
+ const url=summaryUrl(subject.id);
+ currentItem=null;
+ resetViewer();
+ $("modalTitle").textContent="Résumé — "+subject.name;
+ $("modalInfo").textContent="Fiche de révision PDF · Basée sur les documents du cours";
+ $("githubFileLink").hidden=true;
+ const pdf=document.createElement("iframe");
+ pdf.className="viewer-frame";
+ pdf.title="Résumé PDF — "+subject.name;
+ pdf.src=url+"#toolbar=1&navpanes=0&view=FitH";
+ $("viewerBody").append(pdf);
+ const download=$("modalDownload");
+ download.hidden=false;
+ download.title="Télécharger le résumé";
+ download.onclick=()=>{const a=document.createElement("a");a.href=url;a.download="Resume-"+subject.id+".pdf";document.body.append(a);a.click();a.remove();};
+ const dlg=$("viewerDialog");if(!dlg.open)dlg.showModal();
+}
 function drawSubjects(){
  const box=$("subjectGrid");box.replaceChildren();
  for(const s of catalog.subjects){
+ const holder=document.createElement("div");holder.className="subject-card";
  const btn=document.createElement("button");btn.type="button";btn.className="subject"+(activeSubject===s.id?" active":"");btn.setAttribute("aria-pressed",String(activeSubject===s.id));
  const icon=document.createElement("span");icon.className="emoji";icon.textContent=ICONS[s.id]||"📘";
  const copy=document.createElement("span");copy.className="subject-copy";
  const name=document.createElement("strong");name.textContent=s.name;
  const desc=document.createElement("small");desc.textContent=s.description;
- const number=document.createElement("span");number.className="number";number.textContent=subjectCount(s.id)+" FICHIER"+(subjectCount(s.id)>1?"S":"");
+ const number=document.createElement("span");number.className="number";const count=subjectCount(s.id);number.textContent=count?count+" PDF":"AUCUN PDF";
  copy.append(name,desc,number);btn.append(icon,copy);
  btn.addEventListener("click",()=>{activeSubject=s.id;$("search").value="";drawSubjects();drawFiles();$("bibliotheque").scrollIntoView({behavior:"smooth",block:"nearest"});});
- box.append(btn);
+ holder.append(btn);
+ if(AVAILABLE_RESUMES.has(s.id)){
+  const link=document.createElement("a");
+  link.className="summary-link";link.href=summaryUrl(s.id);
+  link.textContent="📘 Lire le résumé PDF";
+  link.title="Lire le résumé de "+s.name+" dans cette page";
+  link.addEventListener("click",event=>{event.preventDefault();openCourseSummary(s);});
+  holder.append(link);
+ }else{
+  const note=document.createElement("span");note.className="summary-empty";note.textContent="Résumé indisponible — aucun cours PDF";holder.append(note);
+ }
+ box.append(holder);
  }
  $("allSubjects").hidden=!activeSubject;
 }
