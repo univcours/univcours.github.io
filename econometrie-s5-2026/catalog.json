@@ -1,61 +1,41 @@
 {
-  "version": 3,
+  "version": 4,
   "updatedAt": "2026-11-21",
   "subjects": [
     {
       "id": "microeconomie",
       "name": "Microéconomie approfondie",
-      "description": "Équilibre, bien-être, monopole, TD et exercices"
-    },
-    {
-      "id": "recherche-operationnelle",
-      "name": "Recherche opérationnelle",
-      "description": "Programmation linéaire, simplexe, dualité et TD"
-    },
-    {
-      "id": "probabilites",
-      "name": "Probabilités",
-      "description": "Analyse combinatoire, calcul des probabilités et variables aléatoires"
+      "description": "Cours, TD et exercices de microéconomie"
     },
     {
       "id": "tests-hypotheses",
-      "name": "Tests d’hypothèses",
-      "description": "Tests sur la moyenne, cours et notes manuscrites"
+      "name": "Test d’hypothèse",
+      "description": "Cours et exercices de tests statistiques"
+    },
+    {
+      "id": "cms",
+      "name": "CMS",
+      "description": "Cours et exercices de CMS"
     },
     {
       "id": "croissance-economique",
-      "name": "Théories de la croissance",
-      "description": "Concepts économiques et croissance"
+      "name": "Théorie de la croissance",
+      "description": "Cours et supports de croissance économique"
     },
     {
       "id": "anglais",
       "name": "Anglais",
-      "description": "Unités 1 à 4 et exercices"
+      "description": "Cours et exercices d’anglais"
     },
     {
-      "id": "droit-entreprise",
-      "name": "Droit de l’entreprise",
-      "description": "Éléments de cours"
+      "id": "methode-prevision",
+      "name": "Méthode de prévision",
+      "description": "Cours et exercices de prévision"
     },
     {
-      "id": "finances-publiques",
-      "name": "Finances publiques",
-      "description": "Projet de loi de finances et dette publique"
-    },
-    {
-      "id": "informatique-css",
-      "name": "Informatique / Web",
-      "description": "HTML, CSS et accès plateforme"
-    },
-    {
-      "id": "annonces-divers",
-      "name": "Annonces et divers",
-      "description": "Autres pièces jointes partagées"
-    },
-    {
-      "id": "apercus",
-      "name": "Aperçus non récupérés",
-      "description": "Seulement des miniatures, pas les fichiers originaux"
+      "id": "ia-ro",
+      "name": "IA et RO",
+      "description": "Intelligence artificielle et recherche opérationnelle"
     }
   ],
   "files": [
@@ -110,50 +90,10 @@
       "encrypted_path": "/econometrie-s5-2026/vault/708dc85f260e06ca59f46ee4fe61441a8811fd0dbca36170f011fe924585360b.rbl"
     },
     {
-      "name": "Probabilites - Cours 2025-2026.pdf",
-      "title": "Cours de probabilités – FEG Settat",
-      "path": "files/PDF/probabilites/Probabilites - Cours 2025-2026.pdf",
-      "subject": "probabilites",
-      "bytes": 1108440,
-      "kind": "PDF",
-      "sha256": "e182cb92b983c75b689c1bc276d3c391c4573b7c7fed1e4a055e044d5caa6b54",
-      "encrypted_path": "/econometrie-s5-2026/vault/e182cb92b983c75b689c1bc276d3c391c4573b7c7fed1e4a055e044d5caa6b54.rbl"
-    },
-    {
-      "name": "Droit de l entreprise - Axe 1 - Cours.pdf",
-      "title": "Droit de l’entreprise – Axe 1",
-      "path": "files/PDF/droit-entreprise/Droit de l entreprise - Axe 1 - Cours.pdf",
-      "subject": "droit-entreprise",
-      "bytes": 2516030,
-      "kind": "PDF",
-      "sha256": "8b5d2150f53f5c7e7a4069f73f25afd3b18735066158abfc0120e22ef2d58c4d",
-      "encrypted_path": "/econometrie-s5-2026/vault/8b5d2150f53f5c7e7a4069f73f25afd3b18735066158abfc0120e22ef2d58c4d.rbl"
-    },
-    {
-      "name": "Informatique - Exercice CSS - Page cafe.pdf",
-      "title": "Exercice CSS : présentation d’un café",
-      "path": "files/PDF/informatique-css/Informatique - Exercice CSS - Page cafe.pdf",
-      "subject": "informatique-css",
-      "bytes": 464153,
-      "kind": "PDF",
-      "sha256": "43eb5f1c05720bd304383bb1c2d64c1d0b7fff5391f20e9536789838440dfb19",
-      "encrypted_path": "/econometrie-s5-2026/vault/43eb5f1c05720bd304383bb1c2d64c1d0b7fff5391f20e9536789838440dfb19.rbl"
-    },
-    {
-      "name": "Finances publiques - Presentation PLF 2027.pdf",
-      "title": "Présentation du projet de loi de finances 2027",
-      "path": "files/PDF/finances-publiques/Finances publiques - Presentation PLF 2027.pdf",
-      "subject": "finances-publiques",
-      "bytes": 2403597,
-      "kind": "PDF",
-      "sha256": "7a9f69762f99b352557e93e891eb9d3a081afd230ad967f4597a654ad1c2049e",
-      "encrypted_path": "/econometrie-s5-2026/vault/7a9f69762f99b352557e93e891eb9d3a081afd230ad967f4597a654ad1c2049e.rbl"
-    },
-    {
       "name": "RO - Chapitre 1 - Programmation lineaire.pdf",
       "title": "Programmation linéaire et résolution graphique",
       "path": "files/PDF/recherche-operationnelle/RO - Chapitre 1 - Programmation lineaire.pdf",
-      "subject": "recherche-operationnelle",
+      "subject": "ia-ro",
       "bytes": 2280707,
       "kind": "PDF",
       "sha256": "27cd0253988c4b6c8a15ac162466e04c1adaa7918b2e4aed2552665cc3d305b0",
@@ -163,7 +103,7 @@
       "name": "RO - Chapitre 2 - Methode simplexe - CCAS 2025-2026.pdf",
       "title": "Chapitre 2 : méthode du simplexe (filière CCAS)",
       "path": "files/PDF/recherche-operationnelle/RO - Chapitre 2 - Methode simplexe - CCAS 2025-2026.pdf",
-      "subject": "recherche-operationnelle",
+      "subject": "ia-ro",
       "bytes": 2189794,
       "kind": "PDF",
       "sha256": "62c048199996a1f7f4328631ac8c4c43492d1794f95fa5c5829fdc2be4fa7d86",
@@ -173,7 +113,7 @@
       "name": "RO - Chapitre 2 - Methode simplexe - Econometrie S5 2026-2027.pdf",
       "title": "Chapitre 2 : méthode du simplexe (Économétrie S5)",
       "path": "files/PDF/recherche-operationnelle/RO - Chapitre 2 - Methode simplexe - Econometrie S5 2026-2027.pdf",
-      "subject": "recherche-operationnelle",
+      "subject": "ia-ro",
       "bytes": 2148592,
       "kind": "PDF",
       "sha256": "5e47879024fdd94211f40438592e54a4eb1bf59f9707545e86aa95da7f9d8632",
@@ -183,7 +123,7 @@
       "name": "RO - TD1 - Formulation programmation lineaire.pdf",
       "title": "TD 1 : formulation de programmes linéaires",
       "path": "files/PDF/recherche-operationnelle/RO - TD1 - Formulation programmation lineaire.pdf",
-      "subject": "recherche-operationnelle",
+      "subject": "ia-ro",
       "bytes": 237036,
       "kind": "PDF",
       "sha256": "019ee30acba5310b8952e66fe502e072f0e52996a0007beab4fd0ca0f9f98e48",
@@ -210,20 +150,10 @@
       "encrypted_path": "/econometrie-s5-2026/vault/3928eeb901ce9de85b975ec38d8f2ac91373668396598fcae286c672c7bfa09a.rbl"
     },
     {
-      "name": "Probabilites - TD1 - Analyse combinatoire.pdf",
-      "title": "TD 1 : analyse combinatoire",
-      "path": "files/PDF/probabilites/Probabilites - TD1 - Analyse combinatoire.pdf",
-      "subject": "probabilites",
-      "bytes": 55245,
-      "kind": "PDF",
-      "sha256": "a7111b7015741e2ddf0be055bbabc08a98c461c328ca493b1d7deb4f6bfde916",
-      "encrypted_path": "/econometrie-s5-2026/vault/a7111b7015741e2ddf0be055bbabc08a98c461c328ca493b1d7deb4f6bfde916.rbl"
-    },
-    {
       "name": "RO - TD1 - Resolution graphique.pdf",
       "title": "TD 1 : programmation linéaire et résolution graphique",
       "path": "files/PDF/recherche-operationnelle/RO - TD1 - Resolution graphique.pdf",
-      "subject": "recherche-operationnelle",
+      "subject": "ia-ro",
       "bytes": 726248,
       "kind": "PDF",
       "sha256": "8ea1f7d27c7866fd69ddf1279f41195d3dc5e2302fc03f777e83ec9016101f6b",
@@ -243,31 +173,11 @@
       "name": "RO - TD2 - Simplexe et dualite.pdf",
       "title": "TD 2 : simplexe et dualité",
       "path": "files/PDF/recherche-operationnelle/RO - TD2 - Simplexe et dualite.pdf",
-      "subject": "recherche-operationnelle",
+      "subject": "ia-ro",
       "bytes": 759976,
       "kind": "PDF",
       "sha256": "a2236fd52bd12da650c076b48d2ef792208ccb115244566eab6a7e31580702d1",
       "encrypted_path": "/econometrie-s5-2026/vault/a2236fd52bd12da650c076b48d2ef792208ccb115244566eab6a7e31580702d1.rbl"
-    },
-    {
-      "name": "Probabilites - TD2 - Calcul de probabilites.pdf",
-      "title": "TD 2 : calcul de probabilités",
-      "path": "files/PDF/probabilites/Probabilites - TD2 - Calcul de probabilites.pdf",
-      "subject": "probabilites",
-      "bytes": 40932,
-      "kind": "PDF",
-      "sha256": "08a9bf93be16d2fa1822134efbc95bbcea1b4e5872a34f118edfb96efd3bf581",
-      "encrypted_path": "/econometrie-s5-2026/vault/08a9bf93be16d2fa1822134efbc95bbcea1b4e5872a34f118edfb96efd3bf581.rbl"
-    },
-    {
-      "name": "Probabilites - TD3 - Variables aleatoires.pdf",
-      "title": "TD 3 : variables aléatoires et lois de probabilités",
-      "path": "files/PDF/probabilites/Probabilites - TD3 - Variables aleatoires.pdf",
-      "subject": "probabilites",
-      "bytes": 56982,
-      "kind": "PDF",
-      "sha256": "786a2275acdc96dcfff840c837e0e67b9b15cc84027e15e88b913d10e8f84b83",
-      "encrypted_path": "/econometrie-s5-2026/vault/786a2275acdc96dcfff840c837e0e67b9b15cc84027e15e88b913d10e8f84b83.rbl"
     },
     {
       "name": "Tests d hypotheses - Cours S5 - Chapitre 1.pdf",
@@ -328,131 +238,12 @@
       "kind": "PDF",
       "sha256": "4fc49c61002612c6e3fa0db20d0395f3512a36eaf98ad8daccda79a4c9a85dfe",
       "encrypted_path": "/econometrie-s5-2026/vault/4fc49c61002612c6e3fa0db20d0395f3512a36eaf98ad8daccda79a4c9a85dfe.rbl"
-    },
-    {
-      "name": "Document administratif - 2026-10-30.jpeg",
-      "title": "Document administratif photographié",
-      "path": "files/Media/annonces-divers/Document administratif - 2026-10-30.jpeg",
-      "subject": "annonces-divers",
-      "bytes": 109297,
-      "kind": "Media",
-      "sha256": "168b9f5d40ef06aecfd3122ed069dc04973bd983b66967e412d29ea365687ec8",
-      "encrypted_path": "/econometrie-s5-2026/vault/168b9f5d40ef06aecfd3122ed069dc04973bd983b66967e412d29ea365687ec8.rbl"
-    },
-    {
-      "name": "Tests hypotheses - Notes manuscrites - 2026-11-03.jpeg",
-      "title": "Exercices manuscrits – tests statistiques",
-      "path": "files/Media/tests-hypotheses/Tests hypotheses - Notes manuscrites - 2026-11-03.jpeg",
-      "subject": "tests-hypotheses",
-      "bytes": 153730,
-      "kind": "Media",
-      "sha256": "e85bdd9beca56045d20006e77b9e9f803cef1d62f309331d4e11c5bc37c02dd2",
-      "encrypted_path": "/econometrie-s5-2026/vault/e85bdd9beca56045d20006e77b9e9f803cef1d62f309331d4e11c5bc37c02dd2.rbl"
-    },
-    {
-      "name": "Finances publiques - Dette du Maroc - 2026-11-04.jpeg",
-      "title": "Infographie : dette publique du Maroc",
-      "path": "files/Media/finances-publiques/Finances publiques - Dette du Maroc - 2026-11-04.jpeg",
-      "subject": "finances-publiques",
-      "bytes": 267179,
-      "kind": "Media",
-      "sha256": "4faf74f58cf80ad38a68af9a5d031a119b3e20fdbc6da6731ffde8d9d4bbfa0f",
-      "encrypted_path": "/econometrie-s5-2026/vault/4faf74f58cf80ad38a68af9a5d031a119b3e20fdbc6da6731ffde8d9d4bbfa0f.rbl"
-    },
-    {
-      "name": "Capture erreur plateforme de cours - 2026-11-08.jpeg",
-      "title": "Capture d’écran : erreur de plateforme",
-      "path": "files/Media/informatique-css/Capture erreur plateforme de cours - 2026-11-08.jpeg",
-      "subject": "informatique-css",
-      "bytes": 52582,
-      "kind": "Media",
-      "sha256": "dea04685821c6f25c42325037ee56b0e1bcaa604a3bb03d9d44d979307bc4e97",
-      "encrypted_path": "/econometrie-s5-2026/vault/dea04685821c6f25c42325037ee56b0e1bcaa604a3bb03d9d44d979307bc4e97.rbl"
-    },
-    {
-      "name": "Annonce programme de cours - 2026-11-15.jpeg",
-      "title": "Annonce de cours et programme en direct",
-      "path": "files/Media/annonces-divers/Annonce programme de cours - 2026-11-15.jpeg",
-      "subject": "annonces-divers",
-      "bytes": 109570,
-      "kind": "Media",
-      "sha256": "5524ad3b3bcc023d16dd07f444a26e5cf84ee16ff8bfc9537fcd0a7754256d95",
-      "encrypted_path": "/econometrie-s5-2026/vault/5524ad3b3bcc023d16dd07f444a26e5cf84ee16ff8bfc9537fcd0a7754256d95.rbl"
-    },
-    {
-      "name": "Annonce medicale - 2026-11-17.jpeg",
-      "title": "Annonce médicale partagée dans le groupe",
-      "path": "files/Media/annonces-divers/Annonce medicale - 2026-11-17.jpeg",
-      "subject": "annonces-divers",
-      "bytes": 77110,
-      "kind": "Media",
-      "sha256": "89d206b9ef4022a0bac5cf901b8757322d3569e2aadb6368e59d745380fee6ac",
-      "encrypted_path": "/econometrie-s5-2026/vault/89d206b9ef4022a0bac5cf901b8757322d3569e2aadb6368e59d745380fee6ac.rbl"
-    },
-    {
-      "name": "Video partagee - 2026-11-18.mp4",
-      "title": "Vidéo partagée dans le groupe",
-      "path": "files/Media/annonces-divers/Video partagee - 2026-11-18.mp4",
-      "subject": "annonces-divers",
-      "bytes": 2717530,
-      "kind": "Media",
-      "sha256": "0c9b0a1609585982a023be0a7307ef15beca1f101c83e9240aa266f77be2d209",
-      "encrypted_path": "/econometrie-s5-2026/vault/0c9b0a1609585982a023be0a7307ef15beca1f101c83e9240aa266f77be2d209.rbl"
-    },
-    {
-      "name": "PreviewOnly_009.jpeg",
-      "title": "Aperçu basse résolution – original indisponible",
-      "path": "files/PreviewsOnly/PreviewOnly_009.jpeg",
-      "subject": "apercus",
-      "bytes": 928,
-      "kind": "PreviewsOnly",
-      "sha256": "606801cfc85992b83841ccd5c2333de24b03d97e33af42185da33a43786bd376",
-      "encrypted_path": "/econometrie-s5-2026/vault/606801cfc85992b83841ccd5c2333de24b03d97e33af42185da33a43786bd376.rbl"
-    },
-    {
-      "name": "PreviewOnly_019.jpeg",
-      "title": "Aperçu basse résolution – original indisponible",
-      "path": "files/PreviewsOnly/PreviewOnly_019.jpeg",
-      "subject": "apercus",
-      "bytes": 1100,
-      "kind": "PreviewsOnly",
-      "sha256": "dca5f619addc897d70d025eb6aa0ca6b63562530666a25919ae1b330d69bbcad",
-      "encrypted_path": "/econometrie-s5-2026/vault/dca5f619addc897d70d025eb6aa0ca6b63562530666a25919ae1b330d69bbcad.rbl"
-    },
-    {
-      "name": "PreviewOnly_020.jpeg",
-      "title": "Aperçu basse résolution – original indisponible",
-      "path": "files/PreviewsOnly/PreviewOnly_020.jpeg",
-      "subject": "apercus",
-      "bytes": 776,
-      "kind": "PreviewsOnly",
-      "sha256": "b1d51e976a4dd8adf5aac89e5008db818975f66cc0bbf2a21d4be1297edb2f4e",
-      "encrypted_path": "/econometrie-s5-2026/vault/b1d51e976a4dd8adf5aac89e5008db818975f66cc0bbf2a21d4be1297edb2f4e.rbl"
-    },
-    {
-      "name": "PreviewOnly_023.jpeg",
-      "title": "Aperçu basse résolution – original indisponible",
-      "path": "files/PreviewsOnly/PreviewOnly_023.jpeg",
-      "subject": "apercus",
-      "bytes": 780,
-      "kind": "PreviewsOnly",
-      "sha256": "395ea13519f9a12104f0bf561d64d1d23c6a684b59318927577b03a02f3223d3",
-      "encrypted_path": "/econometrie-s5-2026/vault/395ea13519f9a12104f0bf561d64d1d23c6a684b59318927577b03a02f3223d3.rbl"
-    },
-    {
-      "name": "PreviewOnly_024.png",
-      "title": "Aperçu basse résolution – original indisponible",
-      "path": "files/PreviewsOnly/PreviewOnly_024.png",
-      "subject": "apercus",
-      "bytes": 1181,
-      "kind": "PreviewsOnly",
-      "sha256": "73dcac4170657e265f1c70ca8104e6b618372b4f64ddd848e26921b82bcc45f1",
-      "encrypted_path": "/econometrie-s5-2026/vault/73dcac4170657e265f1c70ca8104e6b618372b4f64ddd848e26921b82bcc45f1.rbl"
     }
   ],
   "unavailable": {
     "documents": 3,
     "media": 21
   },
-  "encrypted": true
+  "encrypted": true,
+  "visibilityNote": "Catalogue étudiant : 7 matières officielles, PDF uniquement. Les autres ressources restent archivées."
 }
