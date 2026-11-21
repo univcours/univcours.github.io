@@ -6,7 +6,7 @@
 "use strict";
 const $=id=>document.getElementById(id);
 let vaultKey=null;let keyPromise=null;
-const pref="ribhLab-S5-private-key";
+const pref="univcours-S5-private-key";
 const textEncoder=new TextEncoder();
 function parseAccess(input){
  const raw=String(input||"").trim();
@@ -25,7 +25,7 @@ function parseAccess(input){
 }
 function openDb(){
  return new Promise((resolve,reject)=>{
-  const req=indexedDB.open("ribhLabS5Vault",1);
+  const req=indexedDB.open("univcoursS5Vault",1);
   req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains("keys"))req.result.createObjectStore("keys",{keyPath:"id"});};
   req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);
  });
