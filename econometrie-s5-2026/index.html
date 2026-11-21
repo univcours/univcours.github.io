@@ -17,7 +17,51 @@
     if (changed) window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
   } catch (_) {}
 })();
-</script><meta name="viewport" content="width=device-width, initial-scale=1">
+</script>
+<script>
+/* Synchronise la page sur chaque nouvelle publication, sans perdre #access. */
+(() => {
+ const ROOT="/econometrie-s5-2026/";
+ const INTERVAL=45000;
+ let checking=false;
+ async function refreshIfChanged(){
+  if(checking||!navigator.onLine)return;
+  checking=true;
+  try{
+   const response=await fetch(ROOT+"site-version.json?check="+Date.now(),{cache:"no-store"});
+   if(!response.ok)return;
+   const state=await response.json(),version=String(state.version||"");
+   if(!/^[a-zA-Z0-9._-]{8,120}$/.test(version))return;
+   const current=new URL(location.href);
+   if(current.searchParams.get("_sv")===version)return;
+   if(document.getElementById("adminDialog")?.open||document.getElementById("viewerDialog")?.open)return;
+   /* Don't reload into an old deployment while GitHub Pages is catching up. */
+   const expected=String(state.indexSha256||"");
+   if(/^[a-f0-9]{64}$/.test(expected)&&crypto.subtle){
+    const probe=await fetch(ROOT+"index.html?probe="+encodeURIComponent(version),{cache:"no-store"});
+    if(!probe.ok)return;
+    const bytes=await probe.arrayBuffer();
+    const digest=Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",bytes)),n=>n.toString(16).padStart(2,"0")).join("");
+    if(digest!==expected)return;
+   }
+   current.searchParams.set("_sv",version);
+   location.replace(current.pathname+current.search+current.hash);
+  }catch(error){console.debug("Vérification de version différée",error);}
+  finally{checking=false;}
+ }
+ window.checkUnivCoursUpdates=refreshIfChanged;
+ window.addEventListener("load",()=>{
+  refreshIfChanged();
+  window.setInterval(refreshIfChanged,INTERVAL);
+  document.getElementById("viewerDialog")?.addEventListener("close",refreshIfChanged);
+  document.getElementById("adminDialog")?.addEventListener("close",refreshIfChanged);
+ });
+ document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshIfChanged();});
+ window.addEventListener("focus",refreshIfChanged);
+ window.addEventListener("pageshow",refreshIfChanged);
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Économétrie S5 · Bibliothèque par matière</title>
 <meta name="description" content="20 PDF regroupés dans les 7 matières officielles d’Éco 1 : cours, TD et exercices. Ressources collectées depuis le groupe WhatsApp des étudiants.">
 <link rel="canonical" href="https://univcours.github.io/econometrie-s5-2026/">
@@ -137,7 +181,15 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(6px)}.modal{display:flex;
  .subject-card .subject strong,.resume-card .resume-title{animation:none;filter:none;background:none;color:#eafaf8;-webkit-text-fill-color:#eafaf8}
 }
 </style>
-<link rel="stylesheet" href="/econometrie-s5-2026/admin.css">
+<script>
+(() => {
+ const rev=new URLSearchParams(location.search).get("_sv")||String(Date.now());
+ const style=document.createElement("link");
+ style.rel="stylesheet";
+ style.href="/econometrie-s5-2026/admin.css?rev="+encodeURIComponent(rev);
+ document.head.appendChild(style);
+})();
+</script>
 <style>
 .archiveAccess{margin:20px 0 0;padding:15px 18px;border:1px solid #345065;border-radius:12px;background:#112638}.archiveAccess summary{cursor:pointer;color:#a8e7e1;font-size:13px;font-weight:800}.archiveAccess .rowactions{margin:15px 0 5px}.archiveAccess small{color:#a4bfcd;font-size:12px}.adminHero{background:#193a41;border-color:#5e9d9b}
 </style>
@@ -190,7 +242,7 @@ const slugText=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase(
 function subjectCount(id){return catalog.files.filter(x=>x.subject===id).length;}
 function showStatus(message,error=false){const e=$("archiveStatus");e.textContent=message;e.className="status visible"+(error?" error":"");}
 const AVAILABLE_RESUMES=new Set(["microeconomie","tests-hypotheses","croissance-economique","anglais","ia-ro"]);
-const summaryUrl=(id)=>"/econometrie-s5-2026/resumes/"+encodeURIComponent(id)+".pdf";
+const summaryUrl=(id)=>"/econometrie-s5-2026/resumes/"+encodeURIComponent(id)+".pdf?rev="+encodeURIComponent(new URLSearchParams(location.search).get("_sv")||String(Date.now()));
 function openCourseSummary(subject){
  const url=summaryUrl(subject.id);
  currentItem=null;
@@ -425,6 +477,22 @@ $("countPdfs").textContent=catalog.files.filter(x=>x.kind==="PDF"||x.kind==="Doc
 
 drawSubjects();drawFiles();drawSummaries();refreshPublicCatalog();restoreBrowserZip();
 </script>
-<script src="/econometrie-s5-2026/vault.js" defer></script>
-<script src="/econometrie-s5-2026/admin.js" defer></script>
+<script>
+/* Load runtime files with the same version as the page to avoid stale JS/CSS. */
+(() => {
+ const rev=new URLSearchParams(location.search).get("_sv")||String(Date.now());
+ const sources=["vault.js","admin.js"];
+ let cursor=0;
+ const next=()=>{
+  if(cursor>=sources.length)return;
+  const script=document.createElement("script");
+  script.src="/econometrie-s5-2026/"+sources[cursor++]+"?rev="+encodeURIComponent(rev);
+  script.async=false;
+  script.onload=next;
+  script.onerror=()=>{console.error("Unable to load a UnivCours component");next();};
+  document.body.appendChild(script);
+ };
+ next();
+})();
+</script>
 </body></html>
