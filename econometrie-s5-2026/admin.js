@@ -10,6 +10,8 @@ const MANIFEST_PATH="manifest.json", CATALOG_PATH="econometrie-s5-2026/catalog.j
 const SALT_HEX="4f092cb76b41d0566e166fb31f67acf5";
 const HASH_HEX="1d9431042ff3db28e2c5279b1a92532667ac4d29f00b24b3bcc2714fb15f5768";
 const MAX_BYTES=20*1024*1024;
+const OFFICIAL_SUBJECT_IDS=["microeconomie","tests-hypotheses","cms","croissance-economique","anglais","methode-prevision","ia-ro"];
+const LEGACY_NON_COURSE_IDS=new Set(["recherche-operationnelle","probabilites","droit-entreprise","finances-publiques","informatique-css","annonces-divers","apercus"]);
 const state={unlocked:false,privateToken:"",siteToken:"",verified:false,queue:[],created:[],busy:false,failed:0,blockedUntil:0};
 const $=s=>document.getElementById(s);
 const ADMIN=$("adminDialog");
@@ -31,7 +33,7 @@ function fileKind(file){
 function suggestSubject(filename){
  const n=filename.toLowerCase();
  if(/micro|monopole|march[eé]|offre|demande|pareto|bien[- ]?[eê]tre|production|consommateur/.test(n))return "microeconomie";
- if(/simplexe|lin[eé]aire|graphique|recherche.op[eé]ration|\bro[-_ ]/.test(n))return "recherche-operationnelle";
+ if(/simplexe|lin[eé]aire|graphique|recherche.op[eé]ration|\bro[-_ ]/.test(n))return "ia-ro";
  if(/probabilit|combinatoire|variable al[eé]atoire/.test(n))return "probabilites";
  if(/hypoth[eè]se|statistique|tests?[ -]moyenne/.test(n))return "tests-hypotheses";
  if(/croissance|pib/.test(n))return "croissance-economique";
@@ -119,6 +121,7 @@ function enqueue(fileList){
  for(const file of files){
   if(!file.name||file.size===0)continue;
   if(file.size>MAX_BYTES){tooLarge.push(file.name);continue;}
+  if(!file.name.toLowerCase().endsWith(".pdf")){tooLarge.push(file.name+" (PDF uniquement)");continue;}
   const subject=suggestSubject(file.name);
   state.queue.push({file,title:defaultTitle(file),subject:rootSubjects().some(s=>s.id===subject)?subject:($("adminDefaultSubject").value||"annonces-divers")});
  }
@@ -192,10 +195,20 @@ async function fileHash(file){
  const b=await crypto.subtle.digest("SHA-256",await file.arrayBuffer());return toHex(b);
 }
 function buildPublic(manifest){
- return {version:2,updatedAt:new Date().toISOString(),
- subjects:(manifest.subject_order||[]).map(id=>({id,...manifest.subjects[id]})).filter(x=>x.name),
- files:Object.entries(manifest.categories||{}).flatMap(([kind,items])=>items.map(x=>({name:x.name,title:x.title||x.name,path:x.path,subject:x.subject,bytes:x.bytes,kind,sha256:x.sha256,encrypted_path:x.encrypted_path||null}))),
- unavailable:{documents:manifest.unavailable_documents?.length||0,media:manifest.unavailable_media?.length||0}};
+ const includedIds=new Set([
+  ...OFFICIAL_SUBJECT_IDS,
+  ...(manifest.subject_order||[]).filter(id=>!OFFICIAL_SUBJECT_IDS.includes(id)&&!LEGACY_NON_COURSE_IDS.has(id))
+ ]);
+ const subjects=[...includedIds].map(id=>({id,...manifest.subjects[id]})).filter(x=>x.name);
+ const files=Object.entries(manifest.categories||{}).flatMap(([kind,items])=>
+   kind!=="PDF"?[]:items.filter(x=>includedIds.has(x.subject)).map(x=>({
+    name:x.name,title:x.title||x.name,path:x.path,subject:x.subject,bytes:x.bytes,
+    kind,sha256:x.sha256,encrypted_path:x.encrypted_path||null
+   }))
+ );
+ return {version:4,updatedAt:new Date().toISOString(),subjects,files,unavailable:{
+  documents:manifest.unavailable_documents?.length||0,media:manifest.unavailable_media?.length||0
+ }};
 }
 async function publishFiles(){
  if(state.busy)return;
@@ -295,9 +308,9 @@ function render(){
     <div class="admin-form-row"><button type="button" id="adminCheckToken" class="admin-button secondary">Vérifier les accès GitHub</button><span class="admin-note">Les fichiers originaux resteront dans GitHub Private.</span></div>
    </div>
    <div class="admin-section">
-     <h3>2 · Ajouter des fichiers</h3><p>PDF, images, vidéos, documents Office, audio et textes (20 Mo par fichier maximum).</p>
+     <h3>2 · Ajouter des fichiers PDF</h3><p>Uniquement des documents PDF, 20 Mo maximum par fichier.</p>
      <label class="admin-upload-target" id="adminDropZone" for="adminInput"><strong>📂 Choisissez ou déposez les fichiers</strong><small>Vous pouvez en sélectionner plusieurs.</small></label>
-     <input id="adminInput" type="file" multiple hidden accept=".pdf,.jpg,.jpeg,.png,.webp,.gif,.mp4,.webm,.mp3,.m4a,.ogg,.wav,.txt,.csv,.json,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip">
+     <input id="adminInput" type="file" multiple hidden accept=".pdf,application/pdf">
      <label class="admin-field" style="margin-top:12px">Catégorie proposée pour les nouveaux fichiers
       <select id="adminDefaultSubject"></select></label>
      <div id="adminQueue" class="admin-list"></div>
