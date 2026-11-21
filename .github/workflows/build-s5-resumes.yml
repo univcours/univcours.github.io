@@ -1,0 +1,59 @@
+name: Build UnivCours study summary PDFs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "econometrie-s5-2026/resumes-src/**"
+      - ".github/scripts/build_s5_resumes.py"
+      - ".github/workflows/build-s5-resumes.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  compile:
+    name: Compile five subject summaries to PDF
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install PDF generation and validation
+        run: python -m pip install --quiet reportlab pymupdf
+      - name: Build source-based revision PDFs
+        run: python .github/scripts/build_s5_resumes.py
+      - name: Verify readable PDFs, accessible sources and page counts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import fitz
+          folder=Path('econometrie-s5-2026/resumes')
+          files=sorted(folder.glob('*.pdf'))
+          assert len(files)==5, len(files)
+          for pdf in files:
+            doc=fitz.open(pdf)
+            chars=sum(len(p.get_text()) for p in doc)
+            assert len(doc)>=2, (pdf,len(doc))
+            assert chars>=1800, (pdf,chars)
+            for page in doc:
+              # Ensure generated text blocks remain inside page boundaries.
+              for block in page.get_text('blocks'):
+                x0,y0,x1,y1=block[:4]
+                assert -2<=x0 and x1<=page.rect.width+2, (pdf,x0,x1)
+                assert -2<=y0 and y1<=page.rect.height+2, (pdf,y0,y1)
+            print('VALIDATED',pdf.name,'pages',len(doc),'chars',chars)
+          PY
+      - name: Publish generated PDFs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add econometrie-s5-2026/resumes/*.pdf
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish five study summary PDFs for Éco 1"
+            git push
+          fi
