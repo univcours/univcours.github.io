@@ -44,6 +44,9 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(6px)}.modal{display:flex;
 #zipInput,#dirInput{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 @media(max-width:850px){.subjects{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{padding-top:44px}}
 @media(max-width:600px){.top-actions a{display:none}.subjects,.files{grid-template-columns:1fr}.stats{gap:7px}.stat{padding:14px}.stat strong{font-size:23px}.stat span{font-size:11px}.wrap{padding:0 16px}.hero h1{font-size:36px}.hero p{font-size:15px}.modal-bar{padding:12px}.modal-name strong{font-size:13px}.iconbtn{padding:9px}.modal{height:100%}}
+
+/* Interface élève : seulement les matières et leurs fichiers. */
+.hero{padding:36px 0 8px}.hero h1{font-size:clamp(30px,4.5vw,51px);margin:12px 0}.hero p{font-size:16px;max-width:720px}.stats{margin:16px 0 22px}.stat{padding:13px 17px}.stat strong{font-size:23px}.library{margin:20px 0 10px;padding:17px 18px 26px;background:#101f2ddd;border:1px solid #315168;border-radius:16px}.library[hidden]{display:none!important}.library .sectionHead{margin:0 0 7px}.library .group-head{display:none}.library .files{gap:10px}.subject:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.subject.active{box-shadow:0 0 0 1px #5ce2d2}.bottom-note{margin:32px 0 50px}.top-actions{gap:11px}
 </style>
 <link rel="stylesheet" href="/econometrie-s5-2026/admin.css">
 <style>
@@ -51,23 +54,23 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(6px)}.modal{display:flex;
 </style>
 </head>
 <body>
-<header class="topbar"><div class="wrap"><a class="brand" href="https://univcours.github.io/"><b>◆</b> UNIVCOURS <span style="color:#91acb7;font-weight:600">/ COURS</span></a><div class="top-actions"><button id="openAdmin" class="admin-nav" type="button">🔐 Admin</button><a href="#matieres">Matières</a><a href="#bibliotheque">Bibliothèque</a><a href="https://github.com/univcours/rdp/tree/wa-econometrie-s5-2026" target="_blank" rel="noopener noreferrer">Archive GitHub ↗</a></div></div></header>
+<header class="topbar"><div class="wrap"><a class="brand" href="https://univcours.github.io/"><b>◆</b> UNIVCOURS <span style="color:#91acb7;font-weight:600">/ COURS</span></a><div class="top-actions"><button id="openAdmin" class="admin-nav" type="button">🔐 Admin</button><a href="#matieres">Matières</a></div></div></header>
 <main id="main" class="wrap">
 <section class="hero"><span class="pill">LICENCE ÉCONOMÉTRIE · SEMESTRE 5</span><div class="eyebrow" style="margin-top:22px">Bibliothèque de ressources · 2026</div>
-<h1>Apprenez, matière <span>par matière.</span></h1>
-<p>Cours, TD, exercices et documents partagés du <strong>1er octobre au 21 novembre 2026</strong>. Choisissez une matière puis cliquez sur un fichier : il s’affiche directement <strong>dans cette page, sans ZIP ni téléchargement manuel</strong> avec votre accès privé.</p>
-<div class="rowactions"><a href="#matieres" class="btn btn-primary">📚 Parcourir les matières</a><button id="openAdminHero" class="btn adminHero" type="button">＋ Ajouter des documents (Admin)</button></div>
+<h1>Choisissez une matière, <span>ouvrez vos cours.</span></h1>
+<p>Appuyez sur une matière : tous ses cours et exercices apparaissent juste en dessous. Appuyez sur un document pour le lire ici, sans changer de page.</p>
+
 <input type="checkbox" id="rememberZip" hidden>
 <button id="forgetZip" type="button" hidden></button>
 <div id="archiveStatus" class="status" role="status" aria-live="polite"></div>
 </section>
-<div class="stats"><div class="stat"><strong id="countPdfs">27</strong><span>Documents PDF</span></div><div class="stat"><strong id="countMedia">7</strong><span>Images & vidéos originales</span></div><div class="stat"><strong id="countPreview">5</strong><span>Aperçus non originaux</span></div></div>
-<div class="privacy"><span class="symbol">🔒</span><p><strong>Confidentialité :</strong> les originaux sont dans un dépôt GitHub privé. Pour les visualiser directement ici, téléchargez le ZIP depuis votre compte autorisé et sélectionnez-le une seule fois pour la session. Aucun fichier n'est envoyé à ce site ni à un serveur ; l'affichage se fait dans votre navigateur.</p></div>
-<section id="matieres"><div class="sectionHead"><div><h2>Matières et collections</h2><p>Sélectionnez une carte pour consulter ses documents.</p></div><button class="btn" id="allSubjects" type="button" hidden>Afficher toutes les matières</button></div><div id="subjectGrid" class="subjects"></div></section>
-<section id="bibliotheque" class="library"><div class="sectionHead"><div><h2 id="libraryTitle">Tous les fichiers</h2><p id="librarySubtitle">Fichiers regroupés selon leur contenu vérifié.</p></div></div>
+<div class="stats" aria-label="Contenu de la bibliothèque"><div class="stat"><strong id="countPdfs">27</strong><span>Cours et exercices</span></div><div class="stat"><strong id="countMedia">7</strong><span>Images et vidéos</span></div><div class="stat"><strong id="countPreview">5</strong><span>Aperçus</span></div></div>
+
+<section id="matieres"><div class="sectionHead"><div><h2>Les matières</h2><p>Un clic sur une matière pour voir les fichiers.</p></div><button class="btn" id="allSubjects" type="button" hidden>← Toutes les matières</button></div><div id="subjectGrid" class="subjects"></div>
+<section id="bibliotheque" class="library" hidden><div class="sectionHead"><div><h2 id="libraryTitle">Tous les fichiers</h2><p id="librarySubtitle">Fichiers regroupés selon leur contenu vérifié.</p></div></div>
 <div class="toolbar"><input id="search" type="search" class="search" placeholder="Rechercher un cours, un TD, une matière…" autocomplete="off" aria-label="Rechercher dans les fichiers"><span id="fileCount" class="toolbar-right"></span></div>
-<div id="libraryItems" aria-live="polite"></div></section>
-<div class="bottom-note">Les titres peu explicites ont été renommés après lecture du contenu. Certaines pièces jointes originales ne sont plus récupérables sur WhatsApp (3 documents et 21 médias). Les images du dossier « Aperçus » sont des miniatures et non les originaux.</div>
+<div id="libraryItems" aria-live="polite"></div></section></section>
+<p class="bottom-note">Les documents sont protégés. Utilisez le lien privé de la classe pour y accéder directement, sans ZIP ni connexion à GitHub.</p>
 </main>
 <footer>UnivCours · Bibliothèque Économétrie S5 · Octobre–novembre 2026</footer>
 <dialog id="adminDialog" class="admin-modal" aria-label="Administration de la bibliothèque"></dialog>
@@ -75,7 +78,7 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(6px)}.modal{display:flex;
 <input type="file" id="dirInput" webkitdirectory directory multiple>
 <dialog id="viewerDialog" aria-label="Lecteur de fichier">
 <div class="modal">
-<div class="modal-bar"><div class="modal-name"><strong id="modalTitle">Fichier</strong><small id="modalInfo">Prévisualisation</small></div><a id="githubFileLink" class="iconbtn" target="_blank" rel="noopener noreferrer" title="Accéder dans le dépôt privé">GitHub ↗</a><button class="iconbtn" id="modalDownload" type="button" hidden>⬇</button><button class="iconbtn" id="modalClose" type="button" aria-label="Fermer la visionneuse">✕</button></div>
+<div class="modal-bar"><div class="modal-name"><strong id="modalTitle">Fichier</strong><small id="modalInfo">Prévisualisation</small></div><a id="githubFileLink" class="iconbtn" target="_blank" rel="noopener noreferrer" hidden aria-hidden="true" tabindex="-1">GitHub</a><button class="iconbtn" id="modalDownload" type="button" hidden>⬇</button><button class="iconbtn" id="modalClose" type="button" aria-label="Fermer la visionneuse">✕</button></div>
 <div id="viewerBody" class="modal-body"></div>
 </div></dialog>
 <script>
@@ -101,13 +104,15 @@ function drawSubjects(){
  const desc=document.createElement("small");desc.textContent=s.description;
  const number=document.createElement("span");number.className="number";number.textContent=subjectCount(s.id)+" FICHIER"+(subjectCount(s.id)>1?"S":"");
  copy.append(name,desc,number);btn.append(icon,copy);
- btn.addEventListener("click",()=>{activeSubject=activeSubject===s.id?null:s.id;drawSubjects();drawFiles();document.querySelector("#bibliotheque").scrollIntoView({behavior:"smooth",block:"start"});});
+ btn.addEventListener("click",()=>{activeSubject=s.id;$("search").value="";drawSubjects();drawFiles();$("bibliotheque").scrollIntoView({behavior:"smooth",block:"nearest"});});
  box.append(btn);
  }
  $("allSubjects").hidden=!activeSubject;
 }
 function drawFiles(){
  const root=$("libraryItems"),query=slugText($("search").value.trim());root.replaceChildren();
+ $("bibliotheque").hidden=!activeSubject;
+ if(!activeSubject)return;
  const groups=activeSubject?catalog.subjects.filter(s=>s.id===activeSubject):catalog.subjects;
  const shown=catalog.files.filter(f=>(!activeSubject||f.subject===activeSubject)&&(slugText(f.title+" "+f.name+" "+(catalog.subjects.find(s=>s.id===f.subject)?.name||"")).includes(query)));
  $("fileCount").textContent=shown.length+" fichier"+(shown.length!==1?"s":"");
@@ -259,7 +264,7 @@ $("zipInput").addEventListener("change",e=>{const f=e.target.files?.[0];if(f)loa
 $("dirInput").addEventListener("change",e=>{if(e.target.files?.length)loadFolder(e.target.files);e.target.value="";});
 
 $("search").addEventListener("input",drawFiles);
-$("allSubjects").onclick=()=>{activeSubject=null;drawSubjects();drawFiles();};
+$("allSubjects").onclick=()=>{activeSubject=null;$("search").value="";drawSubjects();drawFiles();$("matieres").scrollIntoView({behavior:"smooth",block:"start"});};
 $("modalClose").onclick=()=>$("viewerDialog").close();
 $("viewerDialog").addEventListener("close",()=>{if(!$("viewerDialog").open){resetViewer();currentItem=null;}});
 $("forgetZip").onclick=async()=>{try{const db=await openDb();await new Promise((resolve,reject)=>{const tx=db.transaction("archives","readwrite");tx.objectStore("archives").delete("s5");tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);});db.close();$("forgetZip").hidden=true;$("rememberZip").checked=false;showStatus("Copie enregistrée effacée du navigateur.");}catch(e){showStatus("Impossible d'effacer la copie locale : "+e.message,true);}};
