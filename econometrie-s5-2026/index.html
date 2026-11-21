@@ -227,7 +227,7 @@ async function fileBlob(item){
 async function saveBrowserZip(file){
  try{const db=await openDb();await new Promise((resolve,reject)=>{const tx=db.transaction("archives","readwrite");tx.objectStore("archives").put({id:"s5",blob:file,name:file.name});tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);});db.close();$("forgetZip").hidden=false;showStatus("Archive chargée et conservée dans ce navigateur. Les fichiers restent sur cet appareil.");}catch(e){showStatus("Archive chargée, mais la sauvegarde locale a échoué : "+e.message,true);}
 }
-function openDb(){return new Promise((resolve,reject)=>{const request=indexedDB.open("ribhLabPrivateS5",1);request.onupgradeneeded=()=>{request.result.createObjectStore("archives",{keyPath:"id"});};request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);});}
+function openDb(){return new Promise((resolve,reject)=>{const request=indexedDB.open("univcoursPrivateS5",1);request.onupgradeneeded=()=>{request.result.createObjectStore("archives",{keyPath:"id"});};request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);});}
 async function restoreBrowserZip(){
  try{const db=await openDb();const result=await new Promise((resolve,reject)=>{const req=db.transaction("archives","readonly").objectStore("archives").get("s5");req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});db.close();
  if(result?.blob){$("forgetZip").hidden=false;$("rememberZip").checked=true;await loadZip(result.blob,true);}
