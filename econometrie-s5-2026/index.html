@@ -109,6 +109,33 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(6px)}.modal{display:flex;
 .subject-card .summary-link{display:block;padding:12px 16px;border-top:1px solid #34566a;color:#a5fae9;font-size:13px;font-weight:800;text-decoration:none}
 .subject-card .summary-link:hover,.subject-card .summary-link:focus-visible{background:#1d4a4c;color:#fff}
 .subject-card .summary-empty{display:block;padding:12px 16px;border-top:1px solid #34566a;color:#9bafba;font-size:11.5px}
+
+/* Gradual moving glow on subject and summary card titles. */
+@keyframes univcours-text-shine {
+  0%,100% { background-position:125% 0;filter:drop-shadow(0 0 1px rgba(74,228,210,.15));}
+  48% { background-position:0% 0;filter:drop-shadow(0 0 6px rgba(74,228,210,.55));}
+}
+.subject-card .subject strong,.resume-card .resume-title {
+  display:block;background:linear-gradient(110deg,#e7f5fd 14%,#f9ffff 35%,#5ce2d2 49%,#ffffff 55%,#e7f5fd 76%);
+  background-size:260% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  animation:univcours-text-shine 5.4s ease-in-out infinite;
+}
+.subject-card:nth-child(3n+2) .subject strong,.resume-card:nth-child(3n+2) .resume-title{animation-delay:.9s}
+.subject-card:nth-child(3n+3) .subject strong,.resume-card:nth-child(3n+3) .resume-title{animation-delay:1.8s}
+.resume-section{padding:12px 0 34px;scroll-margin-top:18px}
+.resume-section .sectionHead{margin-top:18px}
+.resume-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.resume-card{min-width:0;display:flex;flex-direction:column;gap:11px;border-radius:15px;background:linear-gradient(145deg,#173345,#0f2432);border:1px solid #345a67;padding:18px}
+.resume-card .resume-title{font-size:16px;line-height:1.55}
+.resume-card p{font-size:13px;color:#b1c8d5;line-height:1.5;flex:1;margin:0}
+.resume-open{font-weight:800;font-size:13px;background:#21514e;border:1px solid #428c82;border-radius:9px;color:#ddfff7;padding:11px 12px;text-align:center;text-decoration:none}
+.resume-open:hover,.resume-open:focus-visible{background:#2a6661;border-color:#76e5d4}
+.resume-source-note{font-size:12px;color:#91aebe;padding:8px 3px;margin:10px 0 0}
+@media(max-width:850px){.resume-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.resume-grid{grid-template-columns:1fr}.top-actions a[href="#resumes"]{display:inline;color:#adf4e9;font-size:12px}}
+@media(prefers-reduced-motion:reduce){
+ .subject-card .subject strong,.resume-card .resume-title{animation:none;filter:none;background:none;color:#eafaf8;-webkit-text-fill-color:#eafaf8}
+}
 </style>
 <link rel="stylesheet" href="/econometrie-s5-2026/admin.css">
 <style>
@@ -116,7 +143,7 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(6px)}.modal{display:flex;
 </style>
 </head>
 <body>
-<header class="topbar"><div class="wrap"><a class="brand" href="https://univcours.github.io/"><b>◆</b> UNIVCOURS <span style="color:#91acb7;font-weight:600">/ COURS</span></a><div class="top-actions"><button id="openAdmin" class="admin-nav" type="button">🔐 Admin</button><a href="#matieres">Matières</a></div></div></header>
+<header class="topbar"><div class="wrap"><a class="brand" href="https://univcours.github.io/"><b>◆</b> UNIVCOURS <span style="color:#91acb7;font-weight:600">/ COURS</span></a><div class="top-actions"><button id="openAdmin" class="admin-nav" type="button">🔐 Admin</button><a href="#matieres">Matières</a><a href="#resumes">Résumés</a></div></div></header>
 <main id="main" class="wrap">
 <section class="hero"><span class="pill">LICENCE ÉCONOMÉTRIE · SEMESTRE 5</span><div class="eyebrow" style="margin-top:22px">Bibliothèque de ressources · 2026</div>
 <h1>Choisissez une matière, <span>ouvrez vos cours.</span></h1>
@@ -132,6 +159,12 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(6px)}.modal{display:flex;
 <section id="bibliotheque" class="library" hidden><div class="sectionHead"><div><h2 id="libraryTitle">Tous les fichiers</h2><p id="librarySubtitle">Les PDF de cette matière apparaissent ici.</p></div></div>
 <div class="toolbar"><input id="search" type="search" class="search" placeholder="Rechercher un cours, un TD, une matière…" autocomplete="off" aria-label="Rechercher dans les fichiers"><span id="fileCount" class="toolbar-right"></span></div>
 <div id="libraryItems" aria-live="polite"></div></section></section>
+<section id="resumes" class="resume-section" aria-labelledby="resume-heading">
+ <div class="sectionHead"><div><h2 id="resume-heading">📘 Résumés des matières</h2>
+ <p>Fiches de révision PDF préparées à partir des documents des cours. Cliquez pour lire directement.</p></div></div>
+ <div id="resumeGrid" class="resume-grid"></div>
+ <p class="resume-source-note">CMS et Méthode de prévision : pas encore de cours PDF reçus, donc pas de résumé disponible pour ces deux matières.</p>
+</section>
 <p class="bottom-note"><strong>Source des ressources :</strong> les documents et les liens directs ont été collectés parmi les fichiers et les liens partagés dans le groupe WhatsApp des étudiants, puis organisés par matière. Les fichiers restent protégés : utilisez le lien privé de la classe pour les consulter.</p>
 </main>
 <footer>UnivCours · Bibliothèque Économétrie S5 · Octobre–novembre 2026</footer>
@@ -179,29 +212,37 @@ function openCourseSummary(subject){
 function drawSubjects(){
  const box=$("subjectGrid");box.replaceChildren();
  for(const s of catalog.subjects){
- const holder=document.createElement("div");holder.className="subject-card";
- const btn=document.createElement("button");btn.type="button";btn.className="subject"+(activeSubject===s.id?" active":"");btn.setAttribute("aria-pressed",String(activeSubject===s.id));
- const icon=document.createElement("span");icon.className="emoji";icon.textContent=ICONS[s.id]||"📘";
- const copy=document.createElement("span");copy.className="subject-copy";
- const name=document.createElement("strong");name.textContent=s.name;
- const desc=document.createElement("small");desc.textContent=s.description;
- const number=document.createElement("span");number.className="number";const count=subjectCount(s.id);number.textContent=count?count+" PDF":"AUCUN PDF";
- copy.append(name,desc,number);btn.append(icon,copy);
- btn.addEventListener("click",()=>{activeSubject=s.id;$("search").value="";drawSubjects();drawFiles();$("bibliotheque").scrollIntoView({behavior:"smooth",block:"nearest"});});
- holder.append(btn);
- if(AVAILABLE_RESUMES.has(s.id)){
-  const link=document.createElement("a");
-  link.className="summary-link";link.href=summaryUrl(s.id);
-  link.textContent="📘 Résumé de la matière";
-  link.title="Ouvrir le résumé de la matière : "+s.name;
-  link.addEventListener("click",event=>{event.preventDefault();openCourseSummary(s);});
-  holder.append(link);
- }else{
-  const note=document.createElement("span");note.className="summary-empty";note.textContent="Résumé indisponible — aucun cours PDF";holder.append(note);
- }
- box.append(holder);
+  const holder=document.createElement("div");holder.className="subject-card";
+  const btn=document.createElement("button");btn.type="button";btn.className="subject"+(activeSubject===s.id?" active":"");btn.setAttribute("aria-pressed",String(activeSubject===s.id));
+  const icon=document.createElement("span");icon.className="emoji";icon.textContent=ICONS[s.id]||"📘";
+  const copy=document.createElement("span");copy.className="subject-copy";
+  const name=document.createElement("strong");name.textContent=s.name;
+  const desc=document.createElement("small");desc.textContent=s.description;
+  const number=document.createElement("span");number.className="number";const count=subjectCount(s.id);number.textContent=count?count+" PDF":"AUCUN PDF";
+  copy.append(name,desc,number);btn.append(icon,copy);
+  btn.addEventListener("click",()=>{activeSubject=s.id;$("search").value="";drawSubjects();drawFiles();$("bibliotheque").scrollIntoView({behavior:"smooth",block:"nearest"});});
+  holder.append(btn);box.append(holder);
  }
  $("allSubjects").hidden=!activeSubject;
+}
+const SUMMARY_DESCRIPTIONS={
+ "microeconomie":"Équilibre, surplus, bien-être, monopole et coûts.",
+ "tests-hypotheses":"Tests Z, hypothèses, risques α et β, exercices.",
+ "croissance-economique":"PIB, croissance réelle, développement et indicateurs.",
+ "anglais":"Units 1–4 : vocabulaire, grammaire et exercices.",
+ "ia-ro":"Programmation linéaire, méthode graphique et simplexe."
+};
+function drawSummaries(){
+ const grid=$("resumeGrid");grid.replaceChildren();
+ for(const subject of catalog.subjects.filter(x=>AVAILABLE_RESUMES.has(x.id))){
+  const card=document.createElement("article");card.className="resume-card";
+  const title=document.createElement("strong");title.className="resume-title";title.textContent=subject.name;
+  const desc=document.createElement("p");desc.textContent=SUMMARY_DESCRIPTIONS[subject.id]||"Fiche de révision de la matière.";
+  const link=document.createElement("a");link.className="resume-open";link.href=summaryUrl(subject.id);
+  link.textContent="📄 Lire le résumé PDF";link.title="Afficher dans cette page : "+subject.name;
+  link.addEventListener("click",event=>{event.preventDefault();openCourseSummary(subject);});
+  card.append(title,desc,link);grid.append(card);
+ }
 }
 function drawFiles(){
  const root=$("libraryItems"),query=slugText($("search").value.trim());root.replaceChildren();
@@ -371,7 +412,7 @@ window.courseReplaceCatalog=(incoming)=>{
 
 
  if(activeSubject&&!catalog.subjects.some(s=>s.id===activeSubject))activeSubject=null;
- drawSubjects();drawFiles();
+ drawSubjects();drawFiles();drawSummaries();
 };
 async function refreshPublicCatalog(){
  try{
@@ -382,7 +423,7 @@ async function refreshPublicCatalog(){
 $("countPdfs").textContent=catalog.files.filter(x=>x.kind==="PDF"||x.kind==="Documents").length;
 
 
-drawSubjects();drawFiles();refreshPublicCatalog();restoreBrowserZip();
+drawSubjects();drawFiles();drawSummaries();refreshPublicCatalog();restoreBrowserZip();
 </script>
 <script src="/econometrie-s5-2026/vault.js" defer></script>
 <script src="/econometrie-s5-2026/admin.js" defer></script>
